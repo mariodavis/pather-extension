@@ -3,9 +3,9 @@ import { DriveApiClient } from "@services/drive/DriveApiClient";
 import { ScanService } from "@services/scan/ScanService";
 import { driveRepository } from "@services/storage/DriveRepository";
 import { ExportService } from "@services/export/ExportService";
-import { toAsciiTree } from "@services/export/formatters/asciiTreeFormatter";
+import { toCsv } from "@services/export/formatters/csvFormatter";
 import { MESSAGE_TYPES } from "@services/messaging/messageTypes";
-import { DRIVE_ROOT_ID, DRIVE_ROOT_PATH } from "@shared/constants";
+import { DRIVE_ROOT_ID } from "@shared/constants";
 
 // Composition root: every service is built once here and wired via
 // constructor injection, so each unit can be tested in isolation.
@@ -67,12 +67,8 @@ async function handleMessage(message) {
       return { ok: true, data: counts };
     }
     case MESSAGE_TYPES.SUBTREE_TEXT_GET: {
-      const rootName =
-        message.folderId === DRIVE_ROOT_ID
-          ? DRIVE_ROOT_PATH
-          : (await driveRepository.getById(message.folderId))?.name ?? "Folder";
       const descendants = await driveRepository.getDescendants(message.folderId);
-      const text = toAsciiTree(rootName, message.folderId, descendants);
+      const text = toCsv(descendants);
       return { ok: true, data: { text } };
     }
     case MESSAGE_TYPES.SEARCH_RUN: {

@@ -2,7 +2,7 @@
 // with this exact redirect URI added under Authorized redirect URIs:
 //   chrome.identity.getRedirectURL() -> https://<extension-id>.chromiumapp.org/
 // See README.md "Setup" for the full walkthrough.
-export const OAUTH_CLIENT_ID = "419073309200-tm1d2vtumubjajf984jrs7vbic18rpt9.apps.googleusercontent.com";
+export const OAUTH_CLIENT_ID = "YOUR_GOOGLE_OAUTH_CLIENT_ID.apps.googleusercontent.com";
 
 export const OAUTH_SCOPES = [
   "https://www.googleapis.com/auth/drive.metadata.readonly",
