@@ -26,13 +26,13 @@ export function NodeMenu({ node }) {
     setOpen(false);
   };
 
-  const copySubtreeCsv = async () => {
+  const copySubtreePaths = async () => {
     const res = await messageBus.send({ type: MESSAGE_TYPES.SUBTREE_TEXT_GET, folderId: node.id });
     if (res.ok) {
       await navigator.clipboard.writeText(res.data.text);
-      showToast("Subtree CSV copied");
+      showToast("Paths copied");
     } else {
-      showToast("Couldn't copy subtree");
+      showToast("Couldn't copy paths");
     }
     setOpen(false);
   };
@@ -45,7 +45,7 @@ export function NodeMenu({ node }) {
     { label: "Copy Share Link", onClick: () => copy(getShareLink(node), "Share link"), disabled: !hasLink },
   ];
   if (node.kind === "folder") {
-    items.push({ label: "Copy Subtree (CSV)", onClick: copySubtreeCsv });
+    items.push({ label: "Copy Subtree Paths", onClick: copySubtreePaths });
   }
 
   return (

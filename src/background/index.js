@@ -3,7 +3,6 @@ import { DriveApiClient } from "@services/drive/DriveApiClient";
 import { ScanService } from "@services/scan/ScanService";
 import { driveRepository } from "@services/storage/DriveRepository";
 import { ExportService } from "@services/export/ExportService";
-import { toCsv } from "@services/export/formatters/csvFormatter";
 import { MESSAGE_TYPES } from "@services/messaging/messageTypes";
 import { DRIVE_ROOT_ID } from "@shared/constants";
 
@@ -68,7 +67,7 @@ async function handleMessage(message) {
     }
     case MESSAGE_TYPES.SUBTREE_TEXT_GET: {
       const descendants = await driveRepository.getDescendants(message.folderId);
-      const text = toCsv(descendants);
+      const text = descendants.map((n) => n.path).join("\n");
       return { ok: true, data: { text } };
     }
     case MESSAGE_TYPES.SEARCH_RUN: {
